@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#root {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/*CSS for right-side shadow */
+.right-shadow {
+  position: relative;
+  border-right: 0.5px solid rgb(180, 180, 180); /* Apply border to all sides */
+  padding: 10px; /* Padding to ensure content does not overlap with shadow */
+}
+
+.right-shadow::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 0px; /* Width of the shadow effect */
+  background: rgba(0, 0, 15, 0.5);
+  box-shadow: 4px 0px 12px rgba(0, 0, 15, 0.8);
+  z-index: -1; /* Ensure the shadow appears behind the content */
+}
+/* select option {
+  color: green;
+  background-color: #ffffff;
+}
+
+select:focus {
+  border-color: #3182ce;
+  outline: none;
+  color: green; 
+}
+
+select {
+  color: green;
+} */
+
+/* 
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+} */

@@ -1,0 +1,322 @@
+import React, { FormEvent, useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import Navbar from "../../components/navbar/Navbar";
+import Sidebar from "../../components/sidebar/Sidebar";
+import { useCookies } from "react-cookie";
+import { projectData, user } from "../project/Project";
+import { MdDelete } from "react-icons/md";
+import { FaDeleteLeft } from "react-icons/fa6";
+
+const ProjectDetails = () => {
+  const { id } = useParams();
+  const [cookies] = useCookies(["jwtToken"]);
+  //const [projectDetails, setProjectDetails] = useState({});
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [projectName, setProjectName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+  const [status, setStatus] = useState<string>("PLANNING");
+  const [manager, setManager] = useState<string>("");
+  const [teamMembers, setTeamMembers] = useState<user[]>([]);
+  //const [tasks, setTasks] = useState<taskData[]>([]);
+
+  const [users, setUsers] = useState<user[]>([]);
+  const [selectedUser, setSelectedUser] = useState<string>("");
+
+  useEffect(() => {
+    try {
+      const fetchProjectDetailsData = async () => {
+        const response = await fetch(
+          `http://localhost:8080/api/projects/${id}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+            },
+          }
+        );
+        const data: projectData = await response.json();
+
+        setProjectName(data.projectName);
+        setDescription(data.description);
+        setStartDate(data.startDate);
+        setEndDate(data.endDate);
+        setManager(data.manager.id);
+        setTeamMembers(data.teamMembers);
+        setSelectedUser(data.teamMembers[data.teamMembers.length - 1].id);
+        //console.log(data.teamMembers[data.teamMembers.length - 1], "hey");
+      };
+
+      const fetchUserDetailsData = async () => {
+        const responseUser = await fetch("http://localhost:8080/api/users", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+          },
+        });
+        if (!responseUser.ok) {
+          throw new Error("Failed to fetch project data");
+        }
+        const dataUser = await responseUser.json();
+        setUsers(dataUser);
+      };
+
+      fetchProjectDetailsData();
+      fetchUserDetailsData();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  // console.log(cookies.jwtToken.jwtToken);
+
+  const transformedTeamMembers = teamMembers.map((member) => ({
+    id: member.id,
+  }));
+
+  const handleRemoveMember = (id: string) => {
+    setTeamMembers((prevMember) =>
+      prevMember.filter((member) => member.id !== id)
+    );
+  };
+
+  const onClickSubmitButton = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const projectDetails = {
+      projectName,
+      description,
+      startDate,
+      endDate,
+      status,
+      manager,
+      teamMembers: transformedTeamMembers,
+    };
+    // console.log(projectDetails);
+    // console.log(id);
+    const response = await fetch(`http://localhost:8080/api/projects/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(projectDetails),
+      headers: {
+        Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response);
+    if (!response.ok) {
+      throw new Error("Invalid inputs");
+    }
+    setIsOpen(false);
+  };
+
+  return (
+    <>
+      <Navbar />
+      <div className="flex">
+        <Sidebar />
+        <div className="bg-blue-100 w-full">
+          {" "}
+          {users.length != 0 && (
+            <form
+              className="w-full mx-auto bg-white p-6 rounded-lg shadow-md"
+              onSubmit={onClickSubmitButton}
+            >
+              <div className="mb-4">
+                <label
+                  htmlFor="projectName"
+                  className="block mb-2 text-sm font-medium text-gray-900"
+                >
+                  Project Name
+                </label>
+                <input
+                  type="text"
+                  id="projectName"
+                  value={projectName}
+                  onChange={(e) => setProjectName(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="description"
+                  className="block mb-2 text-sm font-medium text-gray-900"
+                >
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  required
+                ></textarea>
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="startDate"
+                  className="block mb-2 text-sm font-medium text-gray-900"
+                >
+                  Start Date
+                </label>
+                <input
+                  type="date"
+                  id="startDate"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="endDate"
+                  className="block mb-2 text-sm font-medium text-gray-900"
+                >
+                  End Date
+                </label>
+                <input
+                  type="date"
+                  id="endDate"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="status"
+                  className="block mb-2 text-sm font-medium text-gray-900"
+                >
+                  Status
+                </label>
+                <select
+                  id="status"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  required
+                >
+                  <option value="PLANNING">Planning</option>
+                  <option value="IN_PROGRESS">In Progress</option>
+                  <option value="COMPLETED">Completed</option>
+                </select>
+              </div>
+
+              {users.length > 1 && (
+                <>
+                  <div className="mb-4">
+                    <label
+                      htmlFor="status"
+                      className="block mb-2 text-sm font-medium text-gray-900"
+                    >
+                      Manager
+                    </label>
+                    <select
+                      id="manager"
+                      value={manager}
+                      onChange={(e) => setManager(e.target.value)}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      required
+                    >
+                      {users.map((e) => (
+                        <option value={e.id} key={e.id}>
+                          {e.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="mb-4">
+                    <label
+                      htmlFor="team-member"
+                      className="block mb-2 text-sm font-medium text-gray-900"
+                    >
+                      Team Members
+                    </label>
+                    <select
+                      id="team-member"
+                      value={selectedUser}
+                      onChange={(e) => {
+                        setSelectedUser(e.target.value);
+                        const selectedTeamMember = users.find(
+                          (user) => user.id === e.target.value
+                        );
+                        if (
+                          selectedTeamMember &&
+                          !teamMembers.includes(selectedTeamMember)
+                        ) {
+                          setTeamMembers((prevTeamMembers) => [
+                            ...prevTeamMembers,
+                            selectedTeamMember,
+                          ]);
+                        }
+                      }}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      required
+                    >
+                      <option value="" disabled>
+                        Select team members
+                      </option>
+                      {users.map((e) => (
+                        <option value={e.id} key={e.id}>
+                          {e.name}
+                        </option>
+                      ))}
+                    </select>
+
+                    {teamMembers.length > 0 ? (
+                      <div className="flex flex-wrap gap-2 my-2">
+                        {teamMembers.map((member) => (
+                          <div
+                            key={member.id}
+                            className="flex items-center text-smtext-gray-700 bg-cyan-600 text-white rounded-md px-4 text-sm py-1"
+                          >
+                            <span>{member.name}</span>
+                            <button
+                              className="pt-1 pl-2"
+                              onClick={() => handleRemoveMember(member.id)}
+                            >
+                              <FaDeleteLeft />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-gray-500 pl-2 py-2">
+                        No team members selected
+                      </p>
+                    )}
+                  </div>
+                </>
+              )}
+
+              <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t">
+                {/* <button
+                type="button"
+                className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+                onClick={toggleModel}
+              >
+                Close
+              </button> */}
+                <button
+                  type="submit"
+                  className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                >
+                  Save changes
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default ProjectDetails;
