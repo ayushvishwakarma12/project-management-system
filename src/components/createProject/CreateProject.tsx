@@ -1,9 +1,17 @@
-import { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { user } from "../../page/project/Project";
-import { taskData } from "../../page/task/Task";
+//import { taskData } from "../../page/task/Task";
+import toast from "react-hot-toast";
+import { FaDeleteLeft } from "react-icons/fa6";
 
-const CreateProject = () => {
+interface CreateProjectInterface {
+  fetchProjectData: () => Promise<void>;
+}
+
+const CreateProject: React.FC<CreateProjectInterface> = ({
+  fetchProjectData,
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [projectName, setProjectName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -19,6 +27,13 @@ const CreateProject = () => {
 
   const toggleModel = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleRemoveMember = (id: string) => {
+    setTeamMembers((prevMember) =>
+      prevMember.filter((member) => member.id !== id)
+    );
+    setSelectedUser("");
   };
 
   useEffect(() => {
@@ -48,6 +63,7 @@ const CreateProject = () => {
 
   const onClickSubmitButton = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const toastId = toast.loading("loading...");
     const projectData = {
       projectName,
       description,
@@ -57,7 +73,7 @@ const CreateProject = () => {
       manager,
       teamMembers: transformedTeamMembers,
     };
-    console.log(JSON.stringify(projectData));
+    //console.log(JSON.stringify(projectData));
     const response = await fetch("http://localhost:8080/api/projects", {
       method: "POST",
       body: JSON.stringify(projectData),
@@ -70,6 +86,16 @@ const CreateProject = () => {
       throw new Error("Invalid inputs");
     }
     setIsOpen(false);
+    setDescription("");
+    setEndDate("");
+    setStartDate("");
+    setManager("");
+    setProjectName("");
+    setStatus("");
+    setTeamMembers([]);
+    toast.success("Project Successfully Added...");
+    toast.dismiss(toastId);
+    fetchProjectData();
   };
 
   return (
@@ -259,12 +285,18 @@ const CreateProject = () => {
                         {teamMembers.length > 0 ? (
                           <div className="flex flex-wrap gap-2 my-2">
                             {teamMembers.map((member) => (
-                              <p
+                              <div
                                 key={member.id}
-                                className="text-smtext-gray-700 bg-cyan-600 text-white rounded-md px-4 text-sm py-1"
+                                className="flex items-center text-smtext-gray-700 bg-cyan-600 text-white rounded-md px-4 text-sm py-1"
                               >
-                                {member.name}
-                              </p>
+                                <span>{member.name}</span>
+                                <button
+                                  className="pt-1 pl-2"
+                                  onClick={() => handleRemoveMember(member.id)}
+                                >
+                                  <FaDeleteLeft />
+                                </button>
+                              </div>
                             ))}
                           </div>
                         ) : (

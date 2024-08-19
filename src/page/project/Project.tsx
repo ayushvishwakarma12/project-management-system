@@ -26,30 +26,29 @@ export interface projectData {
 
 const Project = () => {
   const [projects, setProjects] = useState<projectData[]>([]);
-  const [users, setUsers] = useState([]);
   const [cookies] = useCookies(["jwtToken"]);
 
   useEffect(() => {
-    const fetchProjectData = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/projects", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch project data");
-        }
-        const data = await response.json();
-        setProjects(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     fetchProjectData();
   }, []);
+
+  const fetchProjectData = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/projects", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch project data");
+      }
+      const data = await response.json();
+      setProjects(data.reverse());
+    } catch (error) {
+      throw new Error("error");
+    }
+  };
 
   return (
     <>
@@ -59,7 +58,7 @@ const Project = () => {
         <div className="bg-blue-100 w-full px-8">
           <div className="flex py-4 items-center justify-between ">
             <h1 className="text-xl font-semibold">Projects</h1>
-            <CreateProject />
+            <CreateProject fetchProjectData={fetchProjectData} />
           </div>
 
           <div className="flex flex-wrap gap-4">

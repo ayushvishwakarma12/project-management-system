@@ -1,38 +1,31 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { userData } from "../users/Users";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { taskData } from "../../page/task/Task";
 
-interface CreateTaskProps {
-  getTasks: () => Promise<void>;
-}
-
-const CreateTask: React.FC<CreateTaskProps> = ({ getTasks }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [title, settitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("TO_DO");
-  const [priority, setPriority] = useState("MEDIUM");
-  const [assignTo, setAssignTo] = useState("");
-  const [users, setUsers] = useState<userData[]>([]);
+const CreateUser = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [gender, setGender] = useState<string>("");
+  const [role, setRole] = useState<string>("");
+  const [task, setTask] = useState<string>("");
   const [cookies] = useCookies(["jwtToken"]);
-  const [selectedUser, setSelectedUser] = useState<string>("");
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const response = await fetch("http://localhost:8080/api/users", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
-        },
-      });
-      const data = await response.json();
-      setUsers(data);
-    };
-    fetchUserData();
-  }, []);
+  //   useEffect(() => {
+  //     const fetchTaskData = async () => {
+  //       const response = await fetch("http://localhost:8080/api/tasks", {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+  //         },
+  //       });
+  //       const data = await response.json();
+  //       setTask(data);
+  //       console.log(data);
+  //     };
+  //     fetchTaskData();
+  //   }, []);
 
   const toggleModel = () => {
     setIsOpen(!isOpen);
@@ -40,16 +33,16 @@ const CreateTask: React.FC<CreateTaskProps> = ({ getTasks }) => {
 
   const onClickSubmitButton = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const toastId = toast.loading("loading...");
     const taskData = {
-      title,
-      description,
-      status,
-      priority,
-      assignTo,
+      name,
+      username,
+      password,
+      gender,
+      role,
+      task,
     };
     console.log(JSON.stringify(taskData));
-    const response = await fetch("http://localhost:8080/api/tasks", {
+    const response = await fetch("http://localhost:8080/api/signup", {
       method: "POST",
       body: JSON.stringify(taskData),
       headers: {
@@ -58,23 +51,8 @@ const CreateTask: React.FC<CreateTaskProps> = ({ getTasks }) => {
       },
     });
     // console.log(response);
-
-    if (response.ok) {
-      setTimeout(() => {
-        getTasks();
-        toast.dismiss(toastId);
-        toast.success("Task successfully added...");
-        setAssignTo("");
-        setDescription("");
-        setPriority("");
-        setSelectedUser("");
-        settitle("");
-        setIsOpen(false);
-      }, 2000);
-    } else {
-      toast.dismiss(toastId);
-      toast.error("error...");
-    }
+    const data = await response.json();
+    console.log("data", data);
   };
 
   return (
@@ -84,7 +62,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ getTasks }) => {
         type="button"
         className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
       >
-        Create Task
+        Create User
       </button>
       {isOpen && (
         <>
@@ -102,7 +80,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ getTasks }) => {
                     id="hs-basic-modal-label"
                     className="font-bold text-gray-800"
                   >
-                    Create Task
+                    Create User
                   </h3>
                   <button
                     type="button"
@@ -112,7 +90,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ getTasks }) => {
                     x
                   </button>
                 </div>
-                <div className="p-4 overflow-y-auto h-[600px]">
+                <div className="p-4 overflow-y-auto h-[500px]">
                   <form
                     className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md"
                     onSubmit={onClickSubmitButton}
@@ -122,13 +100,13 @@ const CreateTask: React.FC<CreateTaskProps> = ({ getTasks }) => {
                         htmlFor="projectName"
                         className="block mb-2 text-sm font-medium text-gray-900"
                       >
-                        Title
+                        Name
                       </label>
                       <input
                         type="text"
                         id="projectName"
-                        value={title}
-                        onChange={(e) => settitle(e.target.value)}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         required
                       />
@@ -136,18 +114,36 @@ const CreateTask: React.FC<CreateTaskProps> = ({ getTasks }) => {
 
                     <div className="mb-4">
                       <label
-                        htmlFor="description"
+                        htmlFor="username"
                         className="block mb-2 text-sm font-medium text-gray-900"
                       >
-                        Description
+                        Username
                       </label>
-                      <textarea
-                        id="description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                      <input
+                        type="text"
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         required
-                      ></textarea>
+                      />
+                    </div>
+
+                    <div className="mb-4">
+                      <label
+                        htmlFor="password"
+                        className="block mb-2 text-sm font-medium text-gray-900"
+                      >
+                        Password
+                      </label>
+                      <input
+                        type="text"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        required
+                      />
                     </div>
 
                     <div className="mb-4">
@@ -155,67 +151,37 @@ const CreateTask: React.FC<CreateTaskProps> = ({ getTasks }) => {
                         htmlFor="status"
                         className="block mb-2 text-sm font-medium text-gray-900"
                       >
-                        Status
+                        gender
                       </label>
                       <select
                         id="status"
-                        value={status}
-                        onChange={(e) => setStatus(e.target.value)}
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value)}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         required
                       >
-                        <option value="TO_DO">To Do</option>
-                        <option value="IN_PROGRESS">In Progress</option>
-                        <option value="COMPLETED">Completed</option>
+                        <option value="MALE">Male</option>
+                        <option value="FEMALE">Female</option>
+                        <option value="NON_BINARY">Non Binary</option>
+                        <option value="OTHER">Other</option>
                       </select>
                     </div>
 
                     <div className="mb-4">
                       <label
-                        htmlFor="status"
+                        htmlFor="role"
                         className="block mb-2 text-sm font-medium text-gray-900"
                       >
-                        Priority
+                        role
                       </label>
-                      <select
-                        id="priority"
-                        value={priority}
-                        onChange={(e) => setPriority(e.target.value)}
+                      <input
+                        type="text"
+                        id="role"
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         required
-                      >
-                        <option value="LOW">Low</option>
-                        <option value="MEDIUM">Medium</option>
-                        <option value="HIGH">High</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="assignTo"
-                        className="block mb-2 text-sm font-medium text-gray-900"
-                      >
-                        assign to
-                      </label>
-                      <select
-                        id="assignTo"
-                        value={selectedUser}
-                        onChange={(e) => {
-                          setSelectedUser(e.target.value);
-                          setAssignTo(e.target.value);
-                        }}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        required
-                      >
-                        <option key="" value="" disabled>
-                          Select the user
-                        </option>
-                        {users.map((e) => (
-                          <option key={e.id} value={e.id}>
-                            {e.name}
-                          </option>
-                        ))}
-                      </select>
+                      />
                     </div>
 
                     <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t">
@@ -244,4 +210,4 @@ const CreateTask: React.FC<CreateTaskProps> = ({ getTasks }) => {
   );
 };
 
-export default CreateTask;
+export default CreateUser;

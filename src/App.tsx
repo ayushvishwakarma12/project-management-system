@@ -7,6 +7,8 @@ import Project from "./page/project/Project";
 import Task from "./page/task/Task";
 import { useCookies } from "react-cookie";
 import ProjectDetails from "./page/projectDetails/ProjectDetails";
+import Users from "./page/users/Users";
+import TaskDetails from "./page/taskDetails/TaskDetails";
 
 function App() {
   const [cookies] = useCookies(["jwtToken"]);
@@ -23,6 +25,8 @@ function App() {
             <Route path="/projects" element={<Project />} />
             <Route path="/tasks" element={<Task />} />
             <Route path="/projects/:id" element={<ProjectDetails />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/tasks/:id" element={<TaskDetails />} />
           </>
         ) : (
           <Route path="*" element={<Navigate to="/login" />} />
