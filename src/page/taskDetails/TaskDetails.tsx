@@ -1,12 +1,10 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
-import CreateTask from "../../components/createTask/CreateTask";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { userData } from "../../components/users/Users";
 import { taskData } from "../task/Task";
-import { FaDeleteLeft } from "react-icons/fa6";
 import { MdDelete, MdEditOff } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 
@@ -14,8 +12,6 @@ import toast from "react-hot-toast";
 
 const TaskDetails = () => {
   const { id } = useParams();
-
-  const [isOpen, setIsOpen] = useState(false);
   const [title, settitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("TO_DO");
@@ -83,7 +79,7 @@ const TaskDetails = () => {
       body: JSON.stringify(taskData),
     });
     // console.log(response);
-    const data: taskData = await response.json();
+
     if (response.ok) {
       setTimeout(() => {
         toast.success("Task updated successfully...");
