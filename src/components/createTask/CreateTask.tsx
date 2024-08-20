@@ -1,7 +1,6 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { userData } from "../users/Users";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 interface CreateTaskProps {
@@ -18,7 +17,6 @@ const CreateTask: React.FC<CreateTaskProps> = ({ getTasks }) => {
   const [users, setUsers] = useState<userData[]>([]);
   const [cookies] = useCookies(["jwtToken"]);
   const [selectedUser, setSelectedUser] = useState<string>("");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {

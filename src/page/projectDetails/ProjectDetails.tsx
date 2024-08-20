@@ -1,5 +1,5 @@
-import React, { FormEvent, useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { useCookies } from "react-cookie";
@@ -13,7 +13,6 @@ import toast from "react-hot-toast";
 const ProjectDetails = () => {
   const { id } = useParams();
   const [cookies] = useCookies(["jwtToken"]);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [projectName, setProjectName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [startDate, setStartDate] = useState<string>("");
@@ -116,7 +115,6 @@ const ProjectDetails = () => {
       toast.success("Project successfully updated...");
       toast.dismiss(toastId);
       navigate("/projects");
-      setIsOpen(false);
     }, 1000);
   };
 

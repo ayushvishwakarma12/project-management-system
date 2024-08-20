@@ -3,12 +3,9 @@ import logo from "../../assets/logo.png";
 // import profile from "../../assets/profile.png";
 import { useCookies } from "react-cookie";
 // import { CiLogout } from "react-icons/ci";
-import { BiLogOut } from "react-icons/bi";
-import { useEffect, useState } from "react";
-import { userData } from "../users/Users";
 
 const Navbar = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+  const [cookies] = useCookies(["user"]);
 
   return (
     <div className=" relative h-[80px] z-50">

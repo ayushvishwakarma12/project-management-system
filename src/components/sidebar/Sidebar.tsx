@@ -1,7 +1,5 @@
 import { FaHome, FaProjectDiagram, FaTasks } from "react-icons/fa";
-import { BsFileBarGraph } from "react-icons/bs";
 import { GrDocumentPerformance } from "react-icons/gr";
-import { IoSettings } from "react-icons/io5";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -13,7 +11,7 @@ const Sidebar = () => {
   const path = useLocation();
   const { pathname } = path;
   const [sidebar, setSidebar] = useState<boolean>(false);
-  const [cookies, setCookie, removeCookie] = useCookies(["jwtToken"]);
+  const [, , removeCookie] = useCookies(["jwtToken"]);
 
   const onClickProfileButton = () => {
     removeCookie("jwtToken");

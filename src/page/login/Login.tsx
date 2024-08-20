@@ -13,7 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
-  const [cookies, setCookie] = useCookies([COOKIE_NAMES.JWT_TOKEN]);
+  const [, setCookie] = useCookies([COOKIE_NAMES.JWT_TOKEN]);
   const navigate = useNavigate();
 
   const fetchUserByUsername = async (username: string, jwtToken: string) => {
@@ -27,7 +27,7 @@ const Login = () => {
         },
       }
     );
-    console.log(response);
+
     if (response.ok) {
       const data = await response.json();
       console.log(data);

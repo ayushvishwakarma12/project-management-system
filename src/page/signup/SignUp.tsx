@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import signup from "../../assets/signup.jpg";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface user {
   name: string;
