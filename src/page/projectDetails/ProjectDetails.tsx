@@ -30,7 +30,7 @@ const ProjectDetails = () => {
     try {
       const fetchProjectDetailsData = async () => {
         const response = await fetch(
-          `http://localhost:8080/api/projects/${id}`,
+          `https://project-management-system-api-ocz8.onrender.com/api/projects/${id}`,
           {
             method: "GET",
             headers: {
@@ -50,12 +50,15 @@ const ProjectDetails = () => {
       };
 
       const fetchUserDetailsData = async () => {
-        const responseUser = await fetch("http://localhost:8080/api/users", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
-          },
-        });
+        const responseUser = await fetch(
+          "https://project-management-system-api-ocz8.onrender.com/api/users",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+            },
+          }
+        );
         if (!responseUser.ok) {
           throw new Error("Failed to fetch project data");
         }

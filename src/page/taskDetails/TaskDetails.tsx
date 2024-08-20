@@ -27,12 +27,15 @@ const TaskDetails = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const response = await fetch("http://localhost:8080/api/users", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
-        },
-      });
+      const response = await fetch(
+        "https://project-management-system-api-ocz8.onrender.com/api/users",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+          },
+        }
+      );
 
       const data = await response.json();
       setUsers(data);
@@ -40,13 +43,16 @@ const TaskDetails = () => {
     };
 
     const fetchTaskData = async () => {
-      const response = await fetch(`http://localhost:8080/api/tasks/${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://project-management-system-api-ocz8.onrender.com/api/tasks/${id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       // console.log(response);
       const data: taskData = await response.json();
       settitle(data.title);
