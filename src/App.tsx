@@ -14,6 +14,7 @@ function App() {
   const [cookies] = useCookies(["jwtToken"]);
   const jwtToken = cookies.jwtToken;
   const isAuthenticated = jwtToken ? true : false;
+
   return (
     <>
       <Routes>

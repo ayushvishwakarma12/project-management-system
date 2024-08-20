@@ -17,7 +17,7 @@ const TaskCard: React.FC<taskCardProps> = ({ data }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       const response = await fetch(
-        `http://localhost:8080/api/users/${data.assignTo}`,
+        `https://project-management-system-api-ocz8.onrender.com/api/users/${data.assignTo}`,
         {
           method: "GET",
           headers: {
@@ -32,7 +32,7 @@ const TaskCard: React.FC<taskCardProps> = ({ data }) => {
   }, []);
   return (
     <Link to={`/tasks/${data.id}`}>
-      <div className="shadow-md rounded-xl grid grid-cols-4 w-full justify-betwee items-center bg-white px-4 py-5">
+      <div className="shadow-md rounded-xl grid grid-cols-1 md:grid-cols-4 w-full justify-betwee items-center bg-white px-4 py-5">
         <div className="flex items-center gap-5">
           <HiOutlineLightBulb className="h-5 w-5" />
           <div className="w-full">
@@ -53,7 +53,7 @@ const TaskCard: React.FC<taskCardProps> = ({ data }) => {
             {data.status}
           </p>
         </div>
-        <div className="ml-auto relative w-8 h-8 flex items-center justify-center bg-slate-100 rounded-full  border-2 shadow-2xl border-blue-500">
+        <div className="md:flex hidden ml-auto relative w-8 h-8 items-center justify-center bg-slate-100 rounded-full  border-2 shadow-2xl border-blue-500">
           <img src={taskUserProfile} className=" object-contain h-5 w-5" />
         </div>
       </div>

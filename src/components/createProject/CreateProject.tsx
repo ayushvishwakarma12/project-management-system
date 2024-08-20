@@ -1,7 +1,6 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { user } from "../../page/project/Project";
-//import { taskData } from "../../page/task/Task";
 import toast from "react-hot-toast";
 import { FaDeleteLeft } from "react-icons/fa6";
 
@@ -39,12 +38,15 @@ const CreateProject: React.FC<CreateProjectInterface> = ({
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/users", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
-          },
-        });
+        const response = await fetch(
+          "https://project-management-system-api-ocz8.onrender.com/api/users",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+            },
+          }
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch project data");
         }
@@ -73,29 +75,36 @@ const CreateProject: React.FC<CreateProjectInterface> = ({
       manager,
       teamMembers: transformedTeamMembers,
     };
-    //console.log(JSON.stringify(projectData));
-    const response = await fetch("http://localhost:8080/api/projects", {
-      method: "POST",
-      body: JSON.stringify(projectData),
-      headers: {
-        Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+
+    const response = await fetch(
+      "https://project-management-system-api-ocz8.onrender.com/api/projects",
+      {
+        method: "POST",
+        body: JSON.stringify(projectData),
+        headers: {
+          Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
     if (!response.ok) {
+      toast.error("Something error...");
+      toast.dismiss(toastId);
       throw new Error("Invalid inputs");
     }
-    setIsOpen(false);
-    setDescription("");
-    setEndDate("");
-    setStartDate("");
-    setManager("");
-    setProjectName("");
-    setStatus("");
-    setTeamMembers([]);
-    toast.success("Project Successfully Added...");
-    toast.dismiss(toastId);
-    fetchProjectData();
+    setTimeout(() => {
+      setIsOpen(false);
+      setDescription("");
+      setEndDate("");
+      setStartDate("");
+      setManager("");
+      setProjectName("");
+      setStatus("");
+      setTeamMembers([]);
+      toast.success("Project Successfully Added...");
+      toast.dismiss(toastId);
+      fetchProjectData();
+    }, 1000);
   };
 
   return (
@@ -240,6 +249,9 @@ const CreateProject: React.FC<CreateProjectInterface> = ({
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                           required
                         >
+                          <option value={""} disabled>
+                            Please select manager
+                          </option>
                           {users.map((e) => (
                             <option value={e.id}>{e.name}</option>
                           ))}

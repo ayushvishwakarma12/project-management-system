@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import Loader from "../loader/Loader";
 
 interface userData {
   id: string;
@@ -15,12 +16,15 @@ const UsersList = ({ limit = 17, heading = "Users" }) => {
   const [cookies] = useCookies(["jwtToken"]);
   useEffect(() => {
     async function getUserData() {
-      const response = await fetch("http://localhost:8080/api/users", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
-        },
-      });
+      const response = await fetch(
+        "https://project-management-system-api-ocz8.onrender.com/api/users",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+          },
+        }
+      );
       const data = await response.json();
       setData(data);
     }
@@ -33,9 +37,9 @@ const UsersList = ({ limit = 17, heading = "Users" }) => {
       <h1 className=" font-semibold text-lg md:text-xl border-b border-solid  pb-3">
         {heading}
       </h1>
-      {data ? (
+      {data.length > 0 ? (
         <div className="w-full bg-white rounded-lg">
-          <table className="w-full">
+          <table className="w-full ">
             <thead>
               <tr className="w-full text-left">
                 <th className="border sm:p-1 text-[12px] md:text-base md:p-3">
@@ -50,12 +54,6 @@ const UsersList = ({ limit = 17, heading = "Users" }) => {
                 <th className="border sm:p-1 text-[12px] md:text-base md:p-3">
                   role
                 </th>
-                {/* <th className="border sm:p-1 text-[12px] md:text-base md:p-3">
-                  Birth Date
-                </th>
-                <th className="border sm:p-1 text-[12px] md:text-base md:p-3">
-                  Gender
-                </th> */}
               </tr>
             </thead>
             <tbody>
@@ -86,18 +84,6 @@ const UsersList = ({ limit = 17, heading = "Users" }) => {
                     >
                       {eachData.role}
                     </td>
-                    {/* <td
-                      key={eachData.birthDate}
-                      className="border-b lg:p-3 text-[12px] md:text-base p-1"
-                    >
-                      {eachData.birthDate}
-                    </td>
-                    <td
-                      key={eachData.gender}
-                      className="border-b lg:p-3 text-[12px] md:text-base p-1"
-                    >
-                      {eachData.gender}
-                    </td> */}
                   </tr>
                 );
               })}
@@ -105,7 +91,9 @@ const UsersList = ({ limit = 17, heading = "Users" }) => {
           </table>
         </div>
       ) : (
-        <h1>Loading...</h1>
+        <div className="flex justify-center items-center h-screen">
+          <Loader />
+        </div>
       )}
     </div>
   );

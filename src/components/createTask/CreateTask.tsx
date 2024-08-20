@@ -22,12 +22,15 @@ const CreateTask: React.FC<CreateTaskProps> = ({ getTasks }) => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const response = await fetch("http://localhost:8080/api/users", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
-        },
-      });
+      const response = await fetch(
+        "https://project-management-system-api-ocz8.onrender.com/api/users",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+          },
+        }
+      );
       const data = await response.json();
       setUsers(data);
     };
@@ -49,14 +52,17 @@ const CreateTask: React.FC<CreateTaskProps> = ({ getTasks }) => {
       assignTo,
     };
     console.log(JSON.stringify(taskData));
-    const response = await fetch("http://localhost:8080/api/tasks", {
-      method: "POST",
-      body: JSON.stringify(taskData),
-      headers: {
-        Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      "https://project-management-system-api-ocz8.onrender.com/api/tasks",
+      {
+        method: "POST",
+        body: JSON.stringify(taskData),
+        headers: {
+          Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
     // console.log(response);
 
     if (response.ok) {
@@ -70,7 +76,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ getTasks }) => {
         setSelectedUser("");
         settitle("");
         setIsOpen(false);
-      }, 2000);
+      }, 1000);
     } else {
       toast.dismiss(toastId);
       toast.error("error...");

@@ -46,13 +46,16 @@ const SignUp = () => {
       gender,
     };
 
-    const response = await fetch("http://localhost:8080/api/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    });
+    const response = await fetch(
+      "https://project-management-system-api-ocz8.onrender.com/api/signup",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      }
+    );
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -73,7 +76,7 @@ const SignUp = () => {
     <div>
       <div className="flex w-screen flex-wrap text-slate-800">
         <div className="flex w-full flex-col md:w-1/2">
-          <div className="flex justify-center pt-12 md:justify-start md:pl-12">
+          <div className="flex justify-center pt-4 md:justify-start md:pl-12">
             <a href="#" className="text-2xl font-bold text-blue-600">
               Project Management
             </a>
@@ -91,7 +94,7 @@ const SignUp = () => {
             </p>
 
             <form
-              className="flex flex-col items-stretch pt-3 md:pt-4"
+              className="flex flex-col items-stretch pt-3 md:pt-2"
               onSubmit={onClickSubmitFormButton}
             >
               <div className="flex flex-col pt-4">
@@ -193,12 +196,6 @@ const SignUp = () => {
                 )}
               </div>
 
-              <a
-                href="#"
-                className="mb-6 text-center text-sm font-medium text-gray-600 md:text-left"
-              >
-                Forgot password?
-              </a>
               <button
                 type="submit"
                 className="rounded-lg bg-blue-600 px-4 py-2 text-center text-base font-semibold text-white shadow-md outline-none ring-blue-500 ring-offset-2 transition hover:bg-blue-700 focus:ring-2 md:w-32"

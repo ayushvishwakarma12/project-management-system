@@ -43,6 +43,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ data }) => {
               if (e.gender === "FEMALE") {
                 return (
                   <img
+                    key={e.id}
                     alt="natali craig"
                     src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1061&amp;q=80"
                     className="relative inline-block h-9 w-9 !rounded-full  border-2 border-white object-cover object-center hover:z-10"
@@ -51,6 +52,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ data }) => {
               } else {
                 return (
                   <img
+                    key={e.id}
                     alt="Tania Andrew"
                     src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1480&amp;q=80"
                     className="relative inline-block h-9 w-9 !rounded-full  border-2 border-white object-cover object-center hover:z-10"

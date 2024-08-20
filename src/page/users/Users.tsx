@@ -8,7 +8,7 @@ const Users = () => {
       <Navbar />
       <div className="flex">
         <Sidebar />
-        <div className="bg-blue-100 w-full px-8">
+        <div className="bg-blue-100 w-full px-8 h-screen">
           <UsersList />
         </div>
       </div>

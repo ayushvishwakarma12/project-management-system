@@ -16,12 +16,16 @@ const Users = ({ limit = 50, heading = "Users" }) => {
   const [cookies] = useCookies(["jwtToken"]);
   useEffect(() => {
     async function getUserData() {
-      const response = await fetch("http://localhost:8080/api/users", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
-        },
-      });
+      const response = await fetch(
+        "https://project-management-system-api-ocz8.onrender.com/api/users",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+          },
+        }
+      );
+      console.log(response);
       const data = await response.json();
       setData(data);
     }

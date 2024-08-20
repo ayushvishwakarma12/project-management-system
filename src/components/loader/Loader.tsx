@@ -1,8 +1,6 @@
-import React from "react";
-
 const Loader = () => {
   return (
-    <div className=" h-screen bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="flex items-center justify-center">
       <div role="status">
         <svg
           aria-hidden="true"

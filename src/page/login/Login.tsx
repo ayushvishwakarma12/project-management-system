@@ -3,33 +3,65 @@ import login from "../../assets/login.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
+export const COOKIE_NAMES = {
+  JWT_TOKEN: "jwtToken",
+  USER: "user",
+};
+
 const Login = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
-  const [cookies, setCookie] = useCookies(["jwtToken"]);
+  const [cookies, setCookie] = useCookies([COOKIE_NAMES.JWT_TOKEN]);
   const navigate = useNavigate();
+
+  const fetchUserByUsername = async (username: string, jwtToken: string) => {
+    console.log(username);
+    const response = await fetch(
+      `https://project-management-system-api-ocz8.onrender.com/api/username/${username}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    );
+    console.log(response);
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      setCookie(COOKIE_NAMES.USER, data.name);
+    }
+  };
 
   const onClickSubmitButton = async (
     e: FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
+
     if (!username) {
+      setIsError(true);
       setErrorMsg("Please Enter username");
       return;
     }
     if (!password) {
+      setIsError(true);
       setErrorMsg("Please enter password");
       return;
     }
-    const response = await fetch("http://localhost:8080/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
+
+    const response = await fetch(
+      "https://project-management-system-api-ocz8.onrender.com/api/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      }
+    );
+    console.log(response);
     if (!response.ok) {
       const data = await response.json();
       setIsError(true);
@@ -37,14 +69,15 @@ const Login = () => {
     } else {
       const data = await response.json();
       setCookie("jwtToken", data);
+      fetchUserByUsername(data.username, data.jwtToken);
       navigate("/");
     }
   };
 
   return (
-    <div className="h-screen flex justify-center items-center ">
-      <div className=" shadow-2xl p-12 flex border-2items-center border">
-        <div className="">
+    <div className="h-screen flex justify-center items-center">
+      <div className=" shadow-2xl p-12 flex justify-center items-center border ">
+        <div className="hidden md:block">
           <img src={login} className="w-[400px]" />
         </div>
         <div>
