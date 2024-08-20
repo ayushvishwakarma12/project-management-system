@@ -96,14 +96,17 @@ const ProjectDetails = () => {
     };
     // console.log(projectDetails);
     // console.log(id);
-    const response = await fetch(`http://localhost:8080/api/projects/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(projectDetails),
-      headers: {
-        Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `https://project-management-system-api-ocz8.onrender.com/api/projects/${id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(projectDetails),
+        headers: {
+          Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
     console.log(response);
     if (!response.ok) {
       console.log("hey");
@@ -120,12 +123,15 @@ const ProjectDetails = () => {
 
   const onClickDeleteButton = async () => {
     const toastId = toast.loading("loading...");
-    const response = await fetch(`http://localhost:8080/api/projects/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
-      },
-    });
+    const response = await fetch(
+      `https://project-management-system-api-ocz8.onrender.com/api/projects/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+        },
+      }
+    );
     console.log(response);
 
     if (response.ok) {

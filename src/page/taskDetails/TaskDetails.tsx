@@ -70,14 +70,17 @@ const TaskDetails = () => {
       assignTo,
     };
     console.log(JSON.stringify(taskData));
-    const response = await fetch(`http://localhost:8080/api/tasks/${id}`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(taskData),
-    });
+    const response = await fetch(
+      `https://project-management-system-api-ocz8.onrender.com/api/tasks/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(taskData),
+      }
+    );
     // console.log(response);
 
     if (response.ok) {
@@ -92,12 +95,15 @@ const TaskDetails = () => {
 
   const onClickDeleteButton = async () => {
     const toastId = toast.loading("loading...");
-    const response = await fetch(`http://localhost:8080/api/tasks/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
-      },
-    });
+    const response = await fetch(
+      `https://project-management-system-api-ocz8.onrender.com/api/tasks/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${cookies.jwtToken.jwtToken}`,
+        },
+      }
+    );
     console.log(response);
 
     if (response.ok) {
