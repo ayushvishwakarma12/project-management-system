@@ -55,7 +55,7 @@ const Home = () => {
         }
         const data: projectData[] = await response.json();
         setProjectLoading(false);
-        setProjects(data.slice(0, 4));
+        setProjects(data);
       } catch (error) {
         console.log(error);
       }
@@ -88,7 +88,6 @@ const Home = () => {
     }
   };
 
-  console.log(cookies.jwtToken.jwtToken);
   if (cookies.jwtToken.jwtToken === undefined) {
     navigate("/login");
   }
@@ -111,7 +110,7 @@ const Home = () => {
                 </div>
               ) : (
                 <div className=" grid grid-cols-2 gap-2">
-                  {projects.map((e) => (
+                  {projects.slice(0, 4).map((e) => (
                     <Link
                       key={e.id}
                       to={`/projects/${e.id}`}
@@ -176,6 +175,7 @@ const Home = () => {
               )}
             </div>
           </div>
+
           <div>
             <UsersList limit={5} heading="Users" />
           </div>

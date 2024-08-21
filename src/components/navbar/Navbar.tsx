@@ -21,13 +21,13 @@ const Navbar = () => {
                 className="w-[80px] relative -left-2"
                 alt="Flowbite Logo"
               />
-              <span className="whitespace-nowrap font-semibold text-[14px] pb-2 relative -left-2">
+              <span className="whitespace-nowrap font-semibold text-[12px] md:text-[14px] pb-2 relative -left-2">
                 Project Management
               </span>
             </div>
           </Link>
 
-          <div className="text-sm pl-2 my-2 border-l-4  font-sans font-bold border-blue-500 hover:tracking-widest duration-500 ease-in-out ">
+          <div className="text-[12px] pt-5 md:text-sm pl-2 my-2 border-l-4  font-sans font-bold border-blue-500 hover:tracking-widest duration-500 ease-in-out ">
             Welcome!{" "}
             <span className="font-semibold text-md">{cookies.user}</span>
           </div>

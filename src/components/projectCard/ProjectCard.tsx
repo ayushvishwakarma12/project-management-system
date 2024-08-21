@@ -13,11 +13,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ data }) => {
       <div className="relative flex md:min-w-[350px] min-h-[280px] max-h-[280px] max-w-[350px] flex-col overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700 shadow-2xl">
         <div className="p-6">
           <div className="flex items-center justify-between  border-b-[1px] border-black pb-4">
-            <h4 className="block font-sans text-md antialiased w-[120px] md:w-full font-semibold leading-snug tracking-normal text-blue-gray-900 truncate">
+            <h4 className="block font-sans text-md antialiased w-[120px] md:w-[180px] font-semibold leading-snug tracking-normal text-blue-gray-900 truncate">
               {data.projectName}
             </h4>
             <span
-              className={`px-4 md:px-6 rounded-md py-1 font-semibold text-sm ${
+              className={`px-4 md:px-4 rounded-md py-1 font-semibold text-[14px] ${
                 data.status === "IN_PROGRESS"
                   ? "bg-blue-500 text-white"
                   : data.status === "COMPLETED"

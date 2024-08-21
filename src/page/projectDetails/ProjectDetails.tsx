@@ -47,6 +47,7 @@ const ProjectDetails = () => {
         setManager(data.manager.id);
         setTeamMembers(data.teamMembers);
         setSelectedUser(data.teamMembers[data.teamMembers.length - 1].id);
+        console.log(data.teamMembers, "state");
       };
 
       const fetchUserDetailsData = async () => {
@@ -342,13 +343,14 @@ const ProjectDetails = () => {
                         value={selectedUser}
                         onChange={(e) => {
                           setSelectedUser(e.target.value);
+                          const selectedUserInput = e.target.value;
+                          const isPresent = teamMembers.some(
+                            (member) => member.id === selectedUserInput
+                          );
                           const selectedTeamMember = users.find(
                             (user) => user.id === e.target.value
                           );
-                          if (
-                            selectedTeamMember &&
-                            !teamMembers.includes(selectedTeamMember)
-                          ) {
+                          if (selectedTeamMember && !isPresent) {
                             setTeamMembers((prevTeamMembers) => [
                               ...prevTeamMembers,
                               selectedTeamMember,

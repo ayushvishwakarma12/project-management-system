@@ -24,12 +24,14 @@ const Sidebar = () => {
         {/* Sidebar */}
         <div
           className={`h-screen min-w-[220px] max-w-[220px] p-4 right-shadow bg-white fixed ${
-            sidebar ? "top-[88px] left-[0px]" : " md:top-[0px] md:left-0 left-4"
+            sidebar
+              ? "top-[88px] left-[0px] duration-500"
+              : "top-[0px] md:top-[0px] md:left-0 left-4 duration-500"
           }  z-50 transition-transform duration-300 ease-in-out ${
             sidebar ? "-translate-x-6" : "-translate-x-full"
           } md:relative md:translate-x-0`}
         >
-          <ul className="flex flex-col gap-4">
+          <ul className="flex flex-col gap-4 pt-5 md:pt-0">
             <Link to={"/"}>
               <li
                 className={`${
@@ -93,7 +95,7 @@ const Sidebar = () => {
             </Link>
 
             <button
-              className="flex p-2 px-4 items-center gap-2 font-semibold text-slate-500 text-md cursor-pointer "
+              className="flex p-2 px-4 items-center gap-2 font-semibold text-slate-500 text-md cursor-pointer"
               onClick={onClickProfileButton}
             >
               <BiLogOut className=" h-5 w-5" />
@@ -110,7 +112,9 @@ const Sidebar = () => {
 
         {/* Toggle Button */}
         <button
-          className="fixed top-[80px]  left-0 md:hidden z-50 pl-1 pt-2  rounded-full"
+          className={`fixed top-[85px]  md:hidden z-50 pl-1 pt-2  rounded-full ${
+            sidebar ? "left-[160px] duration-500" : " -left-1 duration-500"
+          }`}
           onClick={() => setSidebar(!sidebar)}
         >
           {sidebar ? <IoClose /> : <GiHamburgerMenu />}

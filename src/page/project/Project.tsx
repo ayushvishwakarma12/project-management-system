@@ -46,10 +46,12 @@ const Project = () => {
           },
         }
       );
+
       if (!response.ok) {
         throw new Error("Failed to fetch project data");
       }
       const data = await response.json();
+      console.log(data);
       setLoading(false);
       setProjects(data.reverse());
     } catch (error) {
