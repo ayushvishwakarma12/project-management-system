@@ -4,7 +4,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import { useCookies } from "react-cookie";
 import { projectData } from "../project/Project";
 import { PieChart } from "@mui/x-charts/PieChart";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UsersList from "../../components/usersList/UsersList";
 import { taskData } from "../task/Task";
 import Loader from "../../components/loader/Loader";
@@ -16,6 +16,7 @@ const Home = () => {
   const [projectLoading, setProjectLoading] = useState<boolean>(false);
   const [taskLoading, setTaskLoading] = useState<boolean>(false);
   const [cookies] = useCookies(["jwtToken"]);
+  const navigate = useNavigate();
 
   const data = [
     {
@@ -86,6 +87,11 @@ const Home = () => {
       console.log(error);
     }
   };
+
+  console.log(cookies.jwtToken.jwtToken);
+  if (cookies.jwtToken.jwtToken === undefined) {
+    navigate("/login");
+  }
 
   return (
     <>

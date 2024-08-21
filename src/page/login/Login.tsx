@@ -11,6 +11,7 @@ export const COOKIE_NAMES = {
 const Login = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [, setCookie] = useCookies([COOKIE_NAMES.JWT_TOKEN]);
@@ -39,6 +40,7 @@ const Login = () => {
     e: FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
+    setLoading(true);
 
     if (!username) {
       setIsError(true);
@@ -69,6 +71,7 @@ const Login = () => {
     } else {
       const data = await response.json();
       setCookie("jwtToken", data);
+      setLoading(false);
       fetchUserByUsername(data.username, data.jwtToken);
       navigate("/");
     }
