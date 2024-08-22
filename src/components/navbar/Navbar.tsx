@@ -27,7 +27,7 @@ const Navbar = () => {
             </div>
           </Link>
 
-          <div className="text-[12px] pt-5 md:text-sm pl-2 my-2 border-l-4  font-sans font-bold border-blue-500 hover:tracking-widest duration-500 ease-in-out ">
+          <div className="text-[12px] pt-5 md:pt-0 md:text-sm pl-2 my-2 border-l-4  font-sans font-bold border-blue-500 hover:tracking-widest duration-500 ease-in-out ">
             Welcome!{" "}
             <span className="font-semibold text-md">{cookies.user}</span>
           </div>
